@@ -81,9 +81,12 @@ public class BubbleViewListner implements View.OnTouchListener ,BubbleView.Bubbl
 		mWindowManager.removeView(mBubbleView);
 
 		mBoomImage.setBackgroundResource(R.drawable.anim_bubble_pop);
-		mBoomImage.setX(position.x - mBoomImage.getWidth()/2);
-		mBoomImage.setY(position.y - mBoomImage.getHeight()/2);
 		AnimationDrawable ad = (AnimationDrawable) mBoomImage.getBackground();
+
+		mBoomImage.setX(position.x - ad.getIntrinsicWidth()/2 );
+		mBoomImage.setY(position.y - ad.getIntrinsicHeight()/2);
+		ad.start();
+
 		long time = BubbleUtil.getAnimationDrawableTime(ad);
 		mBoomImage.postDelayed(new Runnable() {
 			@Override

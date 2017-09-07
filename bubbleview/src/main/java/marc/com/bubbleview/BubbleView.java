@@ -29,10 +29,10 @@ public class BubbleView extends View {
 	private final float GOLD_POINT = 0.618f;
 
 	private int mFixedRadius;
-	private int mDragRadius = 10;
+	private int mDragRadius = 15;
 	private Paint mPaint;
 	private PointF mDragPoint,mFixedPoint;
-	private int mMaxDistance = 60;
+	private int mMaxDistance = 80;
 	private double mDistance;
 	private Bitmap mDragBitmap;
 	private BubbleActionlistner mActionListner;

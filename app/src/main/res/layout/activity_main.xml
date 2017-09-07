@@ -21,5 +21,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="sss"/>
+    <ImageView
+        android:id="@+id/bubble_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/demo"/>
 
 </LinearLayout>

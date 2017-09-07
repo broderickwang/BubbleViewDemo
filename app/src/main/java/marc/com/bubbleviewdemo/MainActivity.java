@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity implements BubbleView.Bubble
 		setContentView(R.layout.activity_main);
 		BubbleView.attach(findViewById(R.id.bubble_text),this);
 		BubbleView.attach(findViewById(R.id.bubble_btn),this);
+		BubbleView.attach(findViewById(R.id.bubble_img),this);
 	}
 
 	@Override
