@@ -1,5 +1,7 @@
 package marc.com.bubbleview;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -11,8 +13,6 @@ import android.graphics.Path;
 import android.graphics.PointF;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
 
@@ -65,22 +65,6 @@ public class BubbleView extends View {
 			canvas.drawBitmap(mDragBitmap,mDragPoint.x-mDragBitmap.getWidth()/2,mDragPoint.y-mDragBitmap.getHeight()/2,null);
 		}
 
-	}
-
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		switch (event.getAction()){
-			case MotionEvent.ACTION_DOWN:
-				initPoint(event.getX(),event.getY());
-				break;
-			case MotionEvent.ACTION_MOVE:
-				updateDragPoint(event.getX(),event.getY());
-				break;
-			case MotionEvent.ACTION_UP:
-				break;
-		}
-		invalidate();
-		return true;
 	}
 
 	private void init() {
@@ -141,7 +125,7 @@ public class BubbleView extends View {
 	}
 
 	public static void attach(View view, BubbleDisappearListner listner) {
-		view.setOnTouchListener(new BubbleViewListner(view.getContext()));
+		view.setOnTouchListener(new BubbleViewListner(view,view.getContext(),listner));
 	}
 
 	public void setDragBitmap(Bitmap bitmap) {
@@ -162,9 +146,20 @@ public class BubbleView extends View {
 					updateDragPoint(pf.x,pf.y);
 				}
 			});
+			animator.addListener(new AnimatorListenerAdapter() {
+				@Override
+				public void onAnimationEnd(Animator animation) {
+					if(mActionListner!=null){
+						mActionListner.restore();
+					}
+				}
+			});
 			animator.start();
 		}else{
 			//爆炸
+			if(mActionListner!=null){
+				mActionListner.boom(mDragPoint);
+			}
 		}
 	}
 
@@ -178,6 +173,6 @@ public class BubbleView extends View {
 
 	public interface BubbleActionlistner{
 		void restore();
-		void boom();
+		void boom(PointF position);
 	}
 }

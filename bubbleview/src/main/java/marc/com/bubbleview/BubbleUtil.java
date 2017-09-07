@@ -3,6 +3,7 @@ package marc.com.bubbleview;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.PointF;
+import android.graphics.drawable.AnimationDrawable;
 import android.util.TypedValue;
 import android.view.View;
 
@@ -65,5 +66,13 @@ public class BubbleUtil {
 		p.x = start.x + (end.x-start.x)*percent;
 		p.y = start.y + (end.y-start.y)*percent;
 		return p;
+	}
+
+	public static long getAnimationDrawableTime(AnimationDrawable animationDrawable){
+		long time = 0;
+		for (int i=0;i<animationDrawable.getNumberOfFrames();i++){
+			time += animationDrawable.getDuration(i);
+		}
+		return time;
 	}
 }

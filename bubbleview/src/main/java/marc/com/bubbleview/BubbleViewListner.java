@@ -3,9 +3,14 @@ package marc.com.bubbleview;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
+import android.graphics.PointF;
+import android.graphics.drawable.AnimationDrawable;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 
 /**
  * Created by 王成达
@@ -21,13 +26,25 @@ public class BubbleViewListner implements View.OnTouchListener ,BubbleView.Bubbl
 	private WindowManager mWindowManager;
 	private BubbleView mBubbleView;
 	private WindowManager.LayoutParams mParams;
+	private View mStaticView;
+	private FrameLayout mFrame;
+	private ImageView mBoomImage;
+	private BubbleView.BubbleDisappearListner mDisappearListner;
 
-	public BubbleViewListner(Context context) {
+	public BubbleViewListner(View view,Context context,BubbleView.BubbleDisappearListner listner) {
+		this.mStaticView = view;
 		this.mContext = context;
+		this.mDisappearListner = listner;
 		mWindowManager = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
 		mBubbleView = new BubbleView(mContext);
+		mBubbleView.setActionListner(this);
 		mParams = new WindowManager.LayoutParams();
 		mParams.format = PixelFormat.TRANSPARENT;
+		mFrame = new FrameLayout(mContext);
+		mBoomImage = new ImageView(mContext);
+		mBoomImage.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT
+				, ViewGroup.LayoutParams.WRAP_CONTENT));
+		mFrame.addView(mBoomImage);
 	}
 
 	@Override
@@ -36,12 +53,12 @@ public class BubbleViewListner implements View.OnTouchListener ,BubbleView.Bubbl
 			case MotionEvent.ACTION_DOWN:
 				//
 				int[] xy = new int[2];
-				v.getLocationOnScreen(xy);
-				Bitmap b = BubbleUtil.getBitmapByView(v);
+				mStaticView.getLocationOnScreen(xy);
+				Bitmap b = BubbleUtil.getBitmapByView(mStaticView);
 				mWindowManager.addView(mBubbleView,mParams);
 				mBubbleView.initPoint(xy[0]+b.getWidth()/2,xy[1]-BubbleUtil.getStatusHeight(mContext)+b.getHeight()/2);
 				mBubbleView.setDragBitmap(b);
-				v.setVisibility(View.INVISIBLE);
+				mStaticView.setVisibility(View.INVISIBLE);
 				break;
 			case MotionEvent.ACTION_MOVE:
 				mBubbleView.updateDragPoint(event.getRawX(),event.getRawY()-BubbleUtil.getStatusHeight(mContext));
@@ -55,11 +72,26 @@ public class BubbleViewListner implements View.OnTouchListener ,BubbleView.Bubbl
 
 	@Override
 	public void restore() {
-
+		mStaticView.setVisibility(View.VISIBLE);
+		mWindowManager.removeView(mBubbleView);
 	}
 
 	@Override
-	public void boom() {
+	public void boom(PointF position) {
+		mWindowManager.removeView(mBubbleView);
 
+		mBoomImage.setBackgroundResource(R.drawable.anim_bubble_pop);
+		mBoomImage.setX(position.x - mBoomImage.getWidth()/2);
+		mBoomImage.setY(position.y - mBoomImage.getHeight()/2);
+		AnimationDrawable ad = (AnimationDrawable) mBoomImage.getBackground();
+		long time = BubbleUtil.getAnimationDrawableTime(ad);
+		mBoomImage.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				mWindowManager.removeView(mFrame);
+				mDisappearListner.disappear(mStaticView);
+			}
+		},time);
+		mWindowManager.addView(mFrame,mParams);
 	}
 }
