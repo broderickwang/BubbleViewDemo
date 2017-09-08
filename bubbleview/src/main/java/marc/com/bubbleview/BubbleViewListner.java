@@ -66,12 +66,12 @@ public class BubbleViewListner implements View.OnTouchListener ,BubbleView.Bubbl
 				mStaticView.getLocationOnScreen(xy);
 				Bitmap b = BubbleUtil.getBitmapByView(mStaticView);
 				mWindowManager.addView(mBubbleView,mParams);
-				mBubbleView.initPoint(xy[0]+b.getWidth()/2,xy[1]-BubbleUtil.getStatusHeight(mContext)+b.getHeight()/2);
+				mBubbleView.initPoint(xy[0]+b.getWidth()/2,xy[1] + b.getHeight()/2);
 				mBubbleView.setDragBitmap(b);
 				mStaticView.setVisibility(View.INVISIBLE);
 				break;
 			case MotionEvent.ACTION_MOVE:
-				mBubbleView.updateDragPoint(event.getRawX(),event.getRawY()-BubbleUtil.getStatusHeight(mContext));
+				mBubbleView.updateDragPoint(event.getRawX(),event.getRawY()/*-BubbleUtil.getStatusHeight(mContext)*/);
 				break;
 			case MotionEvent.ACTION_UP:
 				mBubbleView.handleActionUp();
