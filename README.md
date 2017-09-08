@@ -14,7 +14,7 @@ repositories {
 }
 
 dependencies {
-    compile 'marc.com:bubbleview:1.1'
+    compile 'marc.com:bubbleview:1.2'
 }
 ```
 
