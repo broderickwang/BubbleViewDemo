@@ -12,6 +12,8 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import static android.view.WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
+
 /**
  * Created by 王成达
  * Date: 2017/9/7
@@ -35,15 +37,23 @@ public class BubbleViewListner implements View.OnTouchListener ,BubbleView.Bubbl
 		this.mStaticView = view;
 		this.mContext = context;
 		this.mDisappearListner = listner;
+
 		mWindowManager = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
+
 		mBubbleView = new BubbleView(mContext);
 		mBubbleView.setActionListner(this);
+
 		mParams = new WindowManager.LayoutParams();
-		mParams.format = PixelFormat.TRANSPARENT;
+		mParams.format = PixelFormat.TRANSPARENT;//WindowManager背景透明
+		mParams.flags =FLAG_TRANSLUCENT_STATUS;//WindowManager全屏
+
 		mFrame = new FrameLayout(mContext);
+
 		mBoomImage = new ImageView(mContext);
+
 		mBoomImage.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT
 				, ViewGroup.LayoutParams.WRAP_CONTENT));
+
 		mFrame.addView(mBoomImage);
 	}
 
