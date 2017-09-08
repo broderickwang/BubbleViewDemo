@@ -2,7 +2,7 @@
 
 **一个可以让所有的控件进行拖动的工具，使用简单，只需要一行代码就能让你的控件变得可以拖动起来！**
 
-![仿雅虎加载](https://github.com/broderickwang/BubbleViewDemo/blob/master/screenshot/2017-09-07%2021.15.25.gif) 
+![BuubleView](https://github.com/broderickwang/BubbleViewDemo/blob/master/screenshot/2017-09-08%2010.49.36.gif) 
 
 ## 引入
 
