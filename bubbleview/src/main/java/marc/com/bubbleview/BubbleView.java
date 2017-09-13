@@ -13,7 +13,9 @@ import android.graphics.Path;
 import android.graphics.PointF;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
+import android.view.animation.BounceInterpolator;
 import android.view.animation.OvershootInterpolator;
 
 /**
@@ -29,7 +31,7 @@ public class BubbleView extends View {
 	private final float GOLD_POINT = 0.618f;
 
 	private int mFixedRadius;
-	private int mDragRadius = 15;
+	private int mDragRadius = 10;
 	private Paint mPaint;
 	private PointF mDragPoint,mFixedPoint;
 	private int mMaxDistance = 80;
@@ -137,12 +139,13 @@ public class BubbleView extends View {
 			//回弹
 			ValueAnimator animator = ObjectAnimator.ofFloat(1);
 			animator.setDuration(350);
-			animator.setInterpolator(new OvershootInterpolator(3.0f));
+			animator.setInterpolator(new OvershootInterpolator(8.0f));
 			animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 				@Override
 				public void onAnimationUpdate(ValueAnimator animation) {
 					float percent = (float) animation.getAnimatedValue();
 					PointF pf = BubbleUtil.getPointByPercent(mFixedPoint,mDragPoint,percent);
+					Log.d("TAG", "onAnimationUpdate: "+percent+","+pf.x+":"+pf.y);
 					updateDragPoint(pf.x,pf.y);
 				}
 			});

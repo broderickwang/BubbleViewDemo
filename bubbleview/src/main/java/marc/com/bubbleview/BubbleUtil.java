@@ -63,8 +63,8 @@ public class BubbleUtil {
 
 	public static PointF getPointByPercent(PointF start, PointF end, float percent) {
 		PointF p = new PointF();
-		p.x = start.x + (end.x-start.x)*percent;
-		p.y = start.y + (end.y-start.y)*percent;
+		p.x = start.x + (end.x-start.x)*(1-percent);
+		p.y = start.y + (end.y-start.y)*(1-percent);
 		return p;
 	}
 
