@@ -29,6 +29,4 @@ BubbleView.attach(findViewById(R.id.bubble_text), new BubbleView.BubbleDisappear
 });
 ```
 
-感谢
 
-[红橙大佬](http://www.jianshu.com/p/9eb9c61e6c8b)在技术和思想上的支持，这么久一直无私奉献，非常感谢。
